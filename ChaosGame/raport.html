@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>raport.knit</title>
+
+<script src="raport_files/header-attrs-2.11/header-attrs.js"></script>
+<script src="raport_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="raport_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="raport_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="raport_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="raport_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="raport_files/navigation-1.1/tabsets.js"></script>
+<link href="raport_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="raport_files/highlightjs-9.12.0/highlight.js"></script>
+<link href="shared/selectize/css/selectize.bootstrap3.css" rel="stylesheet" />
+<script src="shared/selectize/js/selectize.min.js"></script>
+<script src="shared/selectize/accessibility/js/selectize-plugin-a11y.min.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div id="header">
+
+
+
+
+</div>
+
+
+<div id="funcțiile-.gen" class="section level1">
+<h1><strong>Funcțiile .gen</strong></h1>
+<p><br></p>
+<p>Funcțiile tri.gen, sqr.gen, pent.gen și hex.gen reprezintă funcțiile care generează coordonatele tuturor punctelor ce vor fi desenate.</p>
+<hr />
+<div id="tri.gen" class="section level2">
+<h2><strong>tri.gen</strong></h2>
+<p>Funcția tri.gen generează punctele pentru triunghi.</p>
+<pre class="r"><code>tri.gen &lt;- function(distanta)
+dist &lt;- distanta</code></pre>
+<p>Matricea <strong><em>matrice_colturi</em></strong> are coloanele puse astfel: număr de ordine al colțului, coordonata x a colțului, coordonata y a colțului.</p>
+<pre class="r"><code>matrice_colturi &lt;- matrix(NA, ncol = 3, nrow = 3)</code></pre>
+<p>Se inițializează <strong><em>matrice_colturi</em></strong> pentru triunghi.</p>
+<pre class="r"><code>matrice_colturi[1, ] &lt;- c(1, 0, 0)
+matrice_colturi[2, ] &lt;- c(2, 0.5, sqrt(3) / 2)
+matrice_colturi[3, ] &lt;- c(3, 1, 0)</code></pre>
+<p>Șirul <strong><em>ordine_colturi</em></strong> conține numărul de ordine al colțului următor.</p>
+<pre class="r"><code>ordine_colturi &lt;- runif(5000)
+ordine_colturi[which(ordine_colturi &gt; 2 / 3)] &lt;- 3
+ordine_colturi[which(1 / 3 &lt; ordine_colturi &amp; ordine_colturi &lt;= 2 / 3)] &lt;- 2
+ordine_colturi[which(ordine_colturi &lt;= 1 / 3)] &lt;- 1</code></pre>
+<p><strong><em>coordonate_puncte</em></strong> este o matrice pentru coordonatele punctelor ce se vor desena.</p>
+<pre class="r"><code>coordonate_puncte &lt;- matrix(NA, ncol = 2, nrow = 5001)
+colnames(coordonate_puncte) &lt;- c(&quot;x&quot;, &quot;y&quot;)</code></pre>
+<p>Inițializăm primul punct(punctul care este pus aleator).</p>
+<pre class="r"><code>coordonate_puncte[1, ] &lt;- c(runif(1), runif(1) * sqrt(3) / 2)</code></pre>
+<p>Punem în continuare celelalte puncte, iar spot reprezintă colțul la care se duce.</p>
+<pre class="r"><code>for (i in 1:5000) {
+        row &lt;- i + 1
+        spot &lt;- which(matrice_colturi[, 1] == ordine_colturi[i])
+        coordonate_puncte[row, ] &lt;- c(dist * matrice_colturi[spot, 2] + (1 - dist) * coordonate_puncte[i, 1], dist * matrice_colturi[spot, 3] + (1 - dist) * coordonate_puncte[i, 2])
+    }</code></pre>
+<p>Returnăm o listă cu <strong><em>matrice_originala</em></strong>, <strong><em>ordine_colturi</em></strong> și <strong><em>coordonate_puncte</em></strong>.</p>
+<pre class="r"><code>return(list(matrice_colturi, ordine_colturi, coordonate_puncte))</code></pre>
+<hr />
+</div>
+<div id="sqr.gen" class="section level2">
+<h2><strong>sqr.gen</strong></h2>
+<p>Funcția sqr.gen generează punctele pentru pătrat.</p>
+<pre class="r"><code>sqr.gen &lt;- function(distanta)
+dist &lt;- distanta</code></pre>
+<p>Matricea <strong><em>matrice_colturi</em></strong> are coloanele puse astfel: număr de ordine al colțului, coordonata x a colțului, coordonata y a colțului.</p>
+<pre class="r"><code>matrice_colturi &lt;- matrix(NA, ncol = 3, nrow = 8)</code></pre>
+<p>Se inițializează <strong><em>matrice_colturi</em></strong> pentru pătrat.</p>
+<pre class="r"><code>matrice_colturi[1, ] &lt;- c(1, 0.0, 0.0)
+matrice_colturi[2, ] &lt;- c(2, 0.5, 0.0)
+matrice_colturi[3, ] &lt;- c(3, 1.0, 0.0)
+matrice_colturi[4, ] &lt;- c(4, 1.0, 0.5)
+matrice_colturi[5, ] &lt;- c(5, 1.0, 1.0)
+matrice_colturi[6, ] &lt;- c(6, 0.5, 1.0)
+matrice_colturi[7, ] &lt;- c(7, 0.0, 1.0)
+matrice_colturi[8, ] &lt;- c(8, 0.0, 0.5)</code></pre>
+<p>Șirul <strong><em>ordine_colturi</em></strong> conține numărul de ordine al colțului următor.</p>
+<pre class="r"><code>ordine_colturi &lt;- runif(5000)
+ordine_colturi[which(ordine_colturi &gt; 7 / 8)] &lt;- 8
+ordine_colturi[which(6 / 8 &lt; ordine_colturi &amp; ordine_colturi &lt;= 7 / 8)] &lt;- 7
+ordine_colturi[which(5 / 8 &lt; ordine_colturi &amp; ordine_colturi &lt;= 6 / 8)] &lt;- 6
+ordine_colturi[which(4 / 8 &lt; ordine_colturi &amp; ordine_colturi &lt;= 5 / 8)] &lt;- 5
+ordine_colturi[which(3 / 8 &lt; ordine_colturi &amp; ordine_colturi &lt;= 4 / 8)] &lt;- 4
+ordine_colturi[which(2 / 8 &lt; ordine_colturi &amp; ordine_colturi &lt;= 3 / 8)] &lt;- 3
+ordine_colturi[which(1 / 8 &lt; ordine_colturi &amp; ordine_colturi &lt;= 2 / 8)] &lt;- 2
+ordine_colturi[which(ordine_colturi &lt;= 1 / 8)] &lt;- 1</code></pre>
+<p><strong><em>coordonate_puncte</em></strong> este o matrice pentru coordonatele punctelor ce se vor desena.</p>
+<pre class="r"><code>coordonate_puncte &lt;- matrix(NA, ncol = 2, nrow = 5001)
+colnames(coordonate_puncte) &lt;- c(&quot;x&quot;, &quot;y&quot;)</code></pre>
+<p>Inițializăm primul punct(punctul care este pus aleator).</p>
+<pre class="r"><code>coordonate_puncte[1, ] &lt;- c(runif(1), runif(1))</code></pre>
+<p>Punem în continuare celelalte puncte, iar spot reprezintă colțul la care se duce.</p>
+<pre class="r"><code>for (i in 1:5000) {
+        row &lt;- i + 1
+        spot &lt;- which(matrice_colturi[, 1] == ordine_colturi[i])
+        coordonate_puncte[row, ] &lt;- c(dist * matrice_colturi[spot, 2] + (1 - dist) * coordonate_puncte[i, 1], dist * matrice_colturi[spot, 3] + (1 - dist) * coordonate_puncte[i, 2])
+    }</code></pre>
+<p>Returnăm o listă cu <strong><em>matrice_originala</em></strong>, <strong><em>ordine_colturi</em></strong> și <strong><em>coordonate_puncte</em></strong>.</p>
+<pre class="r"><code>return(list(matrice_colturi, ordine_colturi, coordonate_puncte))</code></pre>
+<hr />
+</div>
+<div id="pent.gen" class="section level2">
+<h2><strong>pent.gen</strong></h2>
+<p>Funcția pent.gen generează punctele pentru pentagon.</p>
+<pre class="r"><code>pent.gen &lt;- function(distanta)
+dist &lt;- distanta</code></pre>
+<p>Matricea <strong><em>matrice_colturi</em></strong> are coloanele puse astfel: număr de ordine al colțului, coordonata x a colțului, coordonata y a colțului.</p>
+<pre class="r"><code>matrice_colturi &lt;- matrix(NA, ncol = 3, nrow = 5)</code></pre>
+<p>Se inițializează <strong><em>matrice_colturi</em></strong> pentru pentagon.</p>
+<pre class="r"><code>matrice_colturi[1, ] &lt;- c(1, 0, 1)
+matrice_colturi[2, ] &lt;- c(2, 0.25 * (sqrt(10 + 2 * sqrt(5))), 0.25 * (sqrt(5) - 1))
+matrice_colturi[3, ] &lt;- c(3, 0.25 * (sqrt(10 - 2 * sqrt(5))), -0.25 * (sqrt(5) + 1))
+matrice_colturi[4, ] &lt;- c(4, -0.25 * (sqrt(10 - 2 * sqrt(5))), -0.25 * (sqrt(5) + 1))
+matrice_colturi[5, ] &lt;- c(5, -0.25 * (sqrt(10 + 2 * sqrt(5))), 0.25 * (sqrt(5) - 1))</code></pre>
+<p>Șirul <strong><em>ordine_colturi</em></strong> conține numărul de ordine al colțului următor.</p>
+<pre class="r"><code>ordine_colturi &lt;- runif(5000)
+ordine_colturi[which(ordine_colturi &gt; 4 / 5)] &lt;- 5
+ordine_colturi[which(3 / 5 &lt; ordine_colturi &amp; ordine_colturi &lt;= 4 / 5)] &lt;- 4
+ordine_colturi[which(2 / 5 &lt; ordine_colturi &amp; ordine_colturi &lt;= 3 / 5)] &lt;- 3
+ordine_colturi[which(1 / 5 &lt; ordine_colturi &amp; ordine_colturi &lt;= 2 / 5)] &lt;- 2
+ordine_colturi[which(ordine_colturi &lt;= 1 / 5)] &lt;- 1</code></pre>
+<p><strong><em>coordonate_puncte</em></strong> este o matrice pentru coordonatele punctelor ce se vor desena.</p>
+<pre class="r"><code>coordonate_puncte &lt;- matrix(NA, ncol = 2, nrow = 5001)
+colnames(coordonate_puncte) &lt;- c(&quot;x&quot;, &quot;y&quot;)</code></pre>
+<p>Inițializăm primul punct(punctul care este pus aleator).</p>
+<pre class="r"><code>coordonate_puncte[1, ] &lt;- c(runif(1, -0.25 * (sqrt(10 + 2 * sqrt(5))), 0.25 * (sqrt(10 + 2 * sqrt(5)))), runif(1, -0.25 * (sqrt(5) + 1), 1))</code></pre>
+<p>Punem în continuare celelalte puncte, iar spot reprezintă colțul la care se duce.</p>
+<pre class="r"><code>for (i in 1:5000) {
+        row &lt;- i + 1
+        spot &lt;- which(matrice_colturi[, 1] == ordine_colturi[i])
+        coordonate_puncte[row, ] &lt;- c(dist * matrice_colturi[spot, 2] + (1 - dist) * coordonate_puncte[i, 1], dist * matrice_colturi[spot, 3] + (1 - dist) * coordonate_puncte[i, 2])
+    }</code></pre>
+<p>Returnăm o listă cu <strong><em>matrice_originala</em></strong>, <strong><em>ordine_colturi</em></strong> și <strong><em>coordonate_puncte</em></strong>.</p>
+<pre class="r"><code>return(list(matrice_colturi, ordine_colturi, coordonate_puncte))</code></pre>
+<hr />
+</div>
+<div id="hex.gen" class="section level2">
+<h2><strong>hex.gen</strong></h2>
+<p>Funcția hex.gen generează punctele pentru hexagon.</p>
+<pre class="r"><code>hex.gen &lt;- function(distanta)
+dist &lt;- distanta</code></pre>
+<p>Matricea <strong><em>matrice_colturi</em></strong> are coloanele puse astfel: număr de ordine al colțului, coordonata x a colțului, coordonata y a colțului.</p>
+<pre class="r"><code>matrice_colturi &lt;- matrix(NA, ncol = 3, nrow = 6)</code></pre>
+<p>Se inițializează <strong><em>matrice_colturi</em></strong> pentru hexagon.</p>
+<pre class="r"><code>matrice_colturi[1, ] &lt;- c(1, 0, 1)
+matrice_colturi[2, ] &lt;- c(2, sqrt(3) / 2, 0.5)
+matrice_colturi[3, ] &lt;- c(3, sqrt(3) / 2, -0.5)
+matrice_colturi[4, ] &lt;- c(4, 0, -1)
+matrice_colturi[5, ] &lt;- c(5, -sqrt(3) / 2, -0.5)
+matrice_colturi[6, ] &lt;- c(6, -sqrt(3) / 2, 0.5)</code></pre>
+<p>Șirul <strong><em>ordine_colturi</em></strong> conține numărul de ordine al colțului următor.</p>
+<pre class="r"><code>ordine_colturi &lt;- runif(5000)
+ordine_colturi[which(ordine_colturi &gt; 5 / 6)] &lt;- 6
+ordine_colturi[which(4 / 6 &lt; ordine_colturi &amp; ordine_colturi &lt;= 5 / 6)] &lt;- 5
+ordine_colturi[which(3 / 6 &lt; ordine_colturi &amp; ordine_colturi &lt;= 4 / 6)] &lt;- 4
+ordine_colturi[which(2 / 6 &lt; ordine_colturi &amp; ordine_colturi &lt;= 3 / 6)] &lt;- 3
+ordine_colturi[which(1 / 6 &lt; ordine_colturi &amp; ordine_colturi &lt;= 2 / 6)] &lt;- 2
+ordine_colturi[which(ordine_colturi &lt;= 1 / 6)] &lt;- 1</code></pre>
+<p><strong><em>coordonate_puncte</em></strong> este o matrice pentru coordonatele punctelor ce se vor desena.</p>
+<pre class="r"><code>coordonate_puncte &lt;- matrix(NA, ncol = 2, nrow = 5001)
+colnames(coordonate_puncte) &lt;- c(&quot;x&quot;, &quot;y&quot;)</code></pre>
+<p>Inițializăm primul punct(punctul care este pus aleator).</p>
+<pre class="r"><code>coordonate_puncte[1, ] &lt;- c(runif(1, -sqrt(3) / 2, sqrt(3) / 2), runif(1, -1, 1))</code></pre>
+<p>Punem în continuare celelalte puncte, iar spot reprezintă colțul la care se duce.</p>
+<pre class="r"><code>for (i in 1:5000) {
+        row &lt;- i + 1
+        spot &lt;- which(matrice_colturi[, 1] == ordine_colturi[i])
+        coordonate_puncte[row, ] &lt;- c(dist * matrice_colturi[spot, 2] + (1 - dist) * coordonate_puncte[i, 1], dist * matrice_colturi[spot, 3] + (1 - dist) * coordonate_puncte[i, 2])
+    }</code></pre>
+<p>Returnăm o listă cu <strong><em>matrice_originala</em></strong>, <strong><em>ordine_colturi</em></strong> și <strong><em>coordonate_puncte</em></strong>.</p>
+<pre class="r"><code>return(list(matrice_colturi, ordine_colturi, coordonate_puncte))</code></pre>
+<hr />
+</div>
+<div id="server" class="section level2">
+<h2><strong>Server</strong></h2>
+<p><br></p>
+<p>Init plot pentru <strong>Triunghi</strong>.</p>
+<pre class="r"><code> output$initPlot &lt;- renderPlot({
+      
+        matrice_colturi      &lt;- all.list()[[1]]
+        
+        ordine_colturi  &lt;- all.list()[[2]]
+        
+        coordonate_puncte    &lt;- all.list()[[3]]
+        
+        # Triangle:INIT
+        
+        if (input$shape == &quot;tri&quot;) {
+            par(mar = c(0.5, 0.5, 0.5, 0.5))
+            plot(
+                0,
+                0,
+                xlim = c(0, 1),
+                ylim = c(0, sqrt(3) / 2),
+                col = 0,
+                yaxt = &quot;n&quot;,
+                xaxt = &quot;n&quot;,
+                xlab = &quot;&quot;,
+                ylab = &quot;&quot;,
+                bty = &quot;n&quot;
+            )
+            
+            
+            if (!is.null(input$init)) {
+                if (input$init == 1) {
+                    points(
+                        coordonate_puncte[1, 1],
+                        coordonate_puncte[1, 2],
+                        pch = 20,
+                        cex = 3,
+                        col = &quot;blue&quot;
+                    )
+                    
+                    if (coordonate_puncte[1, 1] &gt;= 0.5 &amp; coordonate_puncte[1, 2] &lt;= sqrt(3) / 4) {
+                        text(
+                            coordonate_puncte[1, 1],
+                            coordonate_puncte[1, 2] + 0.04,
+                            &quot;Random Starting Point&quot;,
+                            col = &quot;blue&quot;,
+                            pos = 2
+                        )
+                    }
+                    if (coordonate_puncte[1, 1] &gt;= 0.5 &amp; coordonate_puncte[1, 2] &gt; sqrt(3) / 4) {
+                        text(
+                            coordonate_puncte[1, 1],
+                            coordonate_puncte[1, 2] - 0.04,
+                            &quot;Random Starting Point&quot;,
+                            col = &quot;blue&quot;,
+                            pos = 2
+                        )
+                    }
+                    if (coordonate_puncte[1, 1] &lt; 0.5 &amp; coordonate_puncte[1, 2] &gt; sqrt(3) / 4) {
+                        text(
+                            coordonate_puncte[1, 1],
+                            coordonate_puncte[1, 2] - 0.04,
+                            &quot;Random Starting Point&quot;,
+                            col = &quot;blue&quot;,
+                            pos = 4
+                        )
+                    }
+                    if (coordonate_puncte[1, 1] &lt; 0.5 &amp; coordonate_puncte[1, 2] &lt;= sqrt(3) / 4) {
+                        text(
+                            coordonate_puncte[1, 1],
+                            coordonate_puncte[1, 2] + 0.04,
+                            &quot;Random Starting Point&quot;,
+                            col = &quot;blue&quot;,
+                            pos = 4
+                        )
+                    }
+                }
+            }
+        }</code></pre>
+<hr />
+<p>Init plot pentru <strong>Pătrat</strong>.</p>
+<pre class="r"><code>if (input$shape == &quot;sqr&quot;) {
+            par(mar = c(0.5, 0.5, 0.5, 0.5))
+            plot(
+                0,
+                0,
+                xlim = c(0, 1),
+                ylim = c(0, 1),
+                col = 0,
+                yaxt = &quot;n&quot;,
+                xaxt = &quot;n&quot;,
+                xlab = &quot;&quot;,
+                ylab = &quot;&quot;,
+                bty = &quot;n&quot;
+            )
+            
+            if (input$init == 1) {
+                points(
+                    coordonate_puncte[1, 1],
+                    coordonate_puncte[1, 2],
+                    pch = 20,
+                    cex = 3,
+                    col = &quot;blue&quot;
+                )
+                
+                if (coordonate_puncte[1, 1] &gt;= 0.5 &amp; coordonate_puncte[1, 2] &lt;= 0.5) {
+                    # DREAPTA JOS
+                    text(
+                        coordonate_puncte[1, 1],
+                        coordonate_puncte[1, 2] + 0.04,
+                        &quot;Random Starting Point&quot;,
+                        col = &quot;blue&quot;,
+                        pos = 2
+                    )
+                }
+                if (coordonate_puncte[1, 1] &gt;= 0.5 &amp; coordonate_puncte[1, 2] &gt; 0.5) {
+                    # DREAPTA SUS
+                    text(
+                        coordonate_puncte[1, 1],
+                        coordonate_puncte[1, 2] - 0.04,
+                        &quot;Random Starting Point&quot;,
+                        col = &quot;blue&quot;,
+                        pos = 2
+                    )
+                }
+                if (coordonate_puncte[1, 1] &lt; 0.5 &amp; coordonate_puncte[1, 2] &gt; 0.5) {
+                    # STANGA SUS
+                    text(
+                        coordonate_puncte[1, 1],
+                        coordonate_puncte[1, 2] - 0.04,
+                        &quot;Random Starting Point&quot;,
+                        col = &quot;blue&quot;,
+                        pos = 4
+                    )
+                }
+                if (coordonate_puncte[1, 1] &lt; 0.5 &amp; coordonate_puncte[1, 2] &lt;= 0.5) {
+                    # STANGA JOS
+                    text(
+                        coordonate_puncte[1, 1],
+                        coordonate_puncte[1, 2] + 0.04,
+                        &quot;Random Starting Point&quot;,
+                        col = &quot;blue&quot;,
+                        pos = 4
+                    )
+                }
+            }
+}</code></pre>
+<hr />
+<p>Init plot pentru <strong>Pentagon</strong>.</p>
+<pre class="r"><code>if (input$shape == &quot;pent&quot;) {
+            
+            par(mar = c(0.5, 0.5, 0.5, 0.5))
+            plot(
+                0,
+                0,
+                xlim = c(-0.25 * (sqrt(10 + 2 * sqrt(5))), 0.25 * (sqrt(10 + 2 * sqrt(5)))),
+                ylim = c(-0.25 * (sqrt(5) + 1), 1),
+                col = 0,
+                yaxt = &quot;n&quot;,
+                xaxt = &quot;n&quot;,
+                xlab = &quot;&quot;,
+                ylab = &quot;&quot;,
+                bty = &quot;n&quot;
+            )
+            
+            if (input$init == 1) {
+                points(
+                    coordonate_puncte[1, 1],
+                    coordonate_puncte[1, 2],
+                    pch = 20,
+                    cex = 3,
+                    col = &quot;blue&quot;
+                )
+                
+                if (coordonate_puncte[1, 1] &gt;= 0 &amp; coordonate_puncte[1, 2] &lt;= 0) {
+                    # DREAPTA JOS
+                    text(
+                        coordonate_puncte[1, 1],
+                        coordonate_puncte[1, 2] + 0.04,
+                        &quot;Random Starting Point&quot;,
+                        col = &quot;blue&quot;,
+                        pos = 2
+                    )
+                }
+                if (coordonate_puncte[1, 1] &gt;= 0 &amp; coordonate_puncte[1, 2] &gt; 0) {
+                    # DREAPTA SUS
+                    text(
+                        coordonate_puncte[1, 1],
+                        coordonate_puncte[1, 2] - 0.04,
+                        &quot;Random Starting Point&quot;,
+                        col = &quot;blue&quot;,
+                        pos = 2
+                    )
+                }
+                if (coordonate_puncte[1, 1] &lt; 0 &amp; coordonate_puncte[1, 2] &gt; 0) {
+                    # STANGA SUS
+                    text(
+                        coordonate_puncte[1, 1],
+                        coordonate_puncte[1, 2] - 0.04,
+                        &quot;Random Starting Point&quot;,
+                        col = &quot;blue&quot;,
+                        pos = 4
+                    )
+                }
+                if (coordonate_puncte[1, 1] &lt; 0 &amp; coordonate_puncte[1, 2] &lt;= 0) {
+                    # STANGA JOS
+                    text(
+                        coordonate_puncte[1, 1],
+                        coordonate_puncte[1, 2] + 0.04,
+                        &quot;Random Starting Point&quot;,
+                        col = &quot;blue&quot;,
+                        pos = 4
+                    )
+                }
+            }
+        }</code></pre>
+<hr />
+<p>Init plot pentru <strong>Hexagon</strong>.</p>
+<pre class="r"><code>if (input$shape == &quot;hex&quot;) {
+            
+            par(mar = c(0.5, 0.5, 0.5, 0.5))
+            plot(
+                0,
+                0,
+                xlim = c(-sqrt(3) / 2, sqrt(3) / 2),
+                ylim = c(-1, 1),
+                col = 0,
+                yaxt = &quot;n&quot;,
+                xaxt = &quot;n&quot;,
+                xlab = &quot;&quot;,
+                ylab = &quot;&quot;,
+                bty = &quot;n&quot;
+            )
+            
+            if (input$init == 1) {
+                points(
+                    coordonate_puncte[1, 1],
+                    coordonate_puncte[1, 2],
+                    pch = 20,
+                    cex = 3,
+                    col = &quot;blue&quot;
+                )
+                
+                if (coordonate_puncte[1, 1] &gt;= 0 &amp; coordonate_puncte[1, 2] &lt;= 0) {
+                    # DREAPTA JOS
+                    text(
+                        coordonate_puncte[1, 1],
+                        coordonate_puncte[1, 2] + 0.04,
+                        &quot;Random Starting Point&quot;,
+                        col = &quot;blue&quot;,
+                        pos = 2
+                    )
+                }
+                if (coordonate_puncte[1, 1] &gt;= 0 &amp; coordonate_puncte[1, 2] &gt; 0) {
+                    # DREAPTA SUS
+                    text(
+                        coordonate_puncte[1, 1],
+                        coordonate_puncte[1, 2] - 0.04,
+                        &quot;Random Starting Point&quot;,
+                        col = &quot;blue&quot;,
+                        pos = 2
+                    )
+                }
+                if (coordonate_puncte[1, 1] &lt; 0 &amp; coordonate_puncte[1, 2] &gt; 0) {
+                    # STANGA SUS
+                    text(
+                        coordonate_puncte[1, 1],
+                        coordonate_puncte[1, 2] - 0.04,
+                        &quot;Random Starting Point&quot;,
+                        col = &quot;blue&quot;,
+                        pos = 4
+                    )
+                }
+                if (coordonate_puncte[1, 1] &lt; 0 &amp; coordonate_puncte[1, 2] &lt;= 0) {
+                    # STANGA JOS
+                    text(
+                        coordonate_puncte[1, 1],
+                        coordonate_puncte[1, 2] + 0.04,
+                        &quot;Random Starting Point&quot;,
+                        col = &quot;blue&quot;,
+                        pos = 4
+                    )
+                }
+            }
+        }</code></pre>
+<hr />
+<p>Setarea coordonatelor punctelor pentru toate formele.</p>
+<pre class="r"><code>if (!is.null(input$init)) {
+            if (input$init != 1) {
+                points(
+                    coordonate_puncte[1:input$init - 1, 1],
+                    coordonate_puncte[1:input$init - 1, 2],
+                    pch = 20,
+                    cex = 1,
+                    col = &quot;blue&quot;
+                )
+                
+                points(
+                    coordonate_puncte[input$init - 1, 1],
+                    coordonate_puncte[input$init - 1, 2],
+                    pch = 20,
+                    cex = 2.75,
+                    col = &quot;blue&quot;
+                )
+                points(
+                    coordonate_puncte[input$init, 1],
+                    coordonate_puncte[input$init, 2],
+                    pch = 21,
+                    cex = 3,
+                    col = &quot;blue&quot;,
+                    bg = &quot;white&quot;
+                )
+                points(
+                    coordonate_puncte[input$init, 1],
+                    coordonate_puncte[input$init, 2],
+                    pch = 20,
+                    cex = 2.75,
+                    col = &quot;blue&quot;
+                )
+                
+                x0 &lt;- coordonate_puncte[input$init - 1, 1]
+                y0 &lt;- coordonate_puncte[input$init - 1, 2]
+                x1 &lt;- coordonate_puncte[input$init, 1]
+                y1 &lt;- coordonate_puncte[input$init, 2]
+                
+                Arrows((.6 * x0 + .4 * x1),
+                       (.6 * y0 + .4 * y1),
+                       (.4 * x0 + .6 * x1),
+                       (.4 * y0 + .6 * y1),
+                       col = &quot;blue&quot;,
+                       lwd = 2
+                )
+                
+                v.x &lt;- matrice_colturi[matrice_colturi[, 1] == ordine_colturi[input$init - 1], 2]
+                v.y &lt;- matrice_colturi[matrice_colturi[, 1] == ordine_colturi[input$init - 1], 3]
+                
+                points(v.x,
+                       v.y,
+                       pch = 1,
+                       cex = 4,
+                       lwd = 2)
+                points(v.x,
+                       v.y,
+                       pch = 1,
+                       cex = 3,
+                       lwd = 2)
+            }
+        }
+        
+        points(matrice_colturi[, 2],
+               matrice_colturi[, 3],
+               pch = 20,
+               cex = 2,
+               col = &quot;red&quot;)</code></pre>
+<hr />
+<p>Extend plot pentru <strong>Triunghi</strong>.</p>
+<pre class="r"><code>output$extendPlot &lt;- renderPlot({
+        matrice_colturi      &lt;- all.list()[[1]]
+        ordine_colturi  &lt;- all.list()[[2]]
+        coordonate_puncte    &lt;- all.list()[[3]]
+        
+        # Triangle:EXTEND
+        
+        if (input$shape == &quot;tri&quot;) {
+            par(mar = c(0.5, 0.5, 0.5, 0.5))
+            plot(
+                0,
+                0,
+                xlim = c(0, 1),
+                ylim = c(0, sqrt(3) / 2),
+                col = 0,
+                yaxt = &quot;n&quot;,
+                xaxt = &quot;n&quot;,
+                xlab = &quot;&quot;,
+                ylab = &quot;&quot;,
+                bty = &quot;n&quot;
+            )
+        }</code></pre>
+<hr />
+<p>Extend plot pentru <strong>Pătrat</strong>.</p>
+<pre class="r"><code>if (input$shape == &quot;sqr&quot;) {
+            par(mar = c(0.5, 0.5, 0.5, 0.5))
+            plot(
+                0,
+                0,
+                xlim = c(0, 1),
+                ylim = c(0, 1),
+                col = 0,
+                yaxt = &quot;n&quot;,
+                xaxt = &quot;n&quot;,
+                xlab = &quot;&quot;,
+                ylab = &quot;&quot;,
+                bty = &quot;n&quot;
+            )
+        }</code></pre>
+<hr />
+<p>Extend plot pentru <strong>Pentagon</strong>.</p>
+<pre class="r"><code>        if (input$shape == &quot;pent&quot;) {
+            
+            par(mar = c(0.5, 0.5, 0.5, 0.5))
+            plot(
+                0,
+                0,
+                xlim = c(-0.25 * (sqrt(10 + 2 * sqrt(5))), 0.25 * (sqrt(10 + 2 * sqrt(5)))),
+                ylim = c(-0.25 * (sqrt(5) + 1), 1),
+                col = 0,
+                yaxt = &quot;n&quot;,
+                xaxt = &quot;n&quot;,
+                xlab = &quot;&quot;,
+                ylab = &quot;&quot;,
+                bty = &quot;n&quot;
+            )
+        }</code></pre>
+<hr />
+<p>Extend plot pentru <strong>Hexagon</strong>.</p>
+<pre class="r"><code>if (input$shape == &quot;hex&quot;) {
+            
+            par(mar = c(0.5, 0.5, 0.5, 0.5))
+            plot(
+                0,
+                0,
+                xlim = c(-sqrt(3) / 2, sqrt(3) / 2),
+                ylim = c(-1, 1),
+                col = 0,
+                yaxt = &quot;n&quot;,
+                xaxt = &quot;n&quot;,
+                xlab = &quot;&quot;,
+                ylab = &quot;&quot;,
+                bty = &quot;n&quot;
+            )
+        }</code></pre>
+</div>
+<div id="user-interface" class="section level2">
+<h2><strong>User Interface</strong></h2>
+<p><br></p>
+<p><strong><em>selectizeInput</em></strong> creează un box care selectează o formă geometrică și o salvează în <strong><em>shape</em></strong>.</p>
+<pre class="r"><code>selectizeInput(
+    &#39;shape&#39;,
+    label = &quot;&quot;,
+        choices = list(
+            &#39;Triunghi&#39; = &#39;tri&#39;,
+            &#39;Pătrat&#39; = &#39;sqr&#39;,
+            &#39;Pentagon&#39; = &#39;pent&#39;,
+            &#39;Hexagon&#39; = &#39;hex&#39;
+        ),
+        selected = &#39;tri&#39;
+)</code></pre>
+<div class="form-group shiny-input-container">
+<label class="control-label" id="shape-label" for="shape"></label>
+<div>
+<select id="shape" class="form-control"><option value="tri" selected>Triunghi</option>
+<option value="sqr">Patrat</option>
+<option value="pent">Pentagon</option>
+<option value="hex">Hexagon</option></select>
+<script type="application/json" data-for="shape">{"plugins":["selectize-plugin-a11y"]}</script>
+</div>
+</div>
+<hr />
+<p><strong><em>conditionalPanel</em></strong> generează un slider doar dacă <strong><em>shape</em></strong> are valoarea potrivită, există câte un panel pentru fiecare formă geometrică, prin urmare este afișat un singur panel în funcție de ce este ales în <strong><em>selectizeInput</em></strong>.</p>
+<pre class="r"><code>conditionalPanel(
+    condition = &quot; input.shape == &#39;tri&#39; &quot;,
+    sliderInput(
+        &quot;dist.tri&quot;,
+        label = &quot;Raportul distantei până la punctul de interes:&quot;,
+        min = 0.01,
+        max = 0.99,
+        step = 0.01,
+        value = 0.5
+    ),
+    p(&quot;Valoarea implicită este de 0.5&quot;, 
+        style=&quot;margin-top: -15px; margin-bottom: 15px; text-align: center; font-size: 13px&quot;
+    )
+)</code></pre>
+<hr />
+<p>Setează o variabilă care va fi folosită pentru simulare, există și pentru timpul între pași.</p>
+<pre class="r"><code>sliderInput(
+&quot;steps&quot;,
+    label = &quot;Puncte generate într-un singur pas:&quot;,
+    min = 1, 
+    max = 100,
+    step= 1,
+    value = 1
+)</code></pre>
+<hr />
+<p>Buton personalizat care apelează <em>gen</em> din <strong><em>server.r</em></strong></p>
+<pre class="r"><code>div(
+    actionButton(
+        inputId = &quot;gen&quot;,
+        label = &quot;GENEREAZĂ&quot;,
+        style = &quot;background-color: #6699ff; width: 120px; color: white&quot;
+        ),
+    style = &quot;margin-top: 10px; display: flex; justify-content: center;&quot;
+)</code></pre>
+<div style="margin-top: 10px; display: flex; justify-content: center;">
+<button id="gen" type="button" class="btn btn-default action-button" style="background-color: #6699ff; width: 120px; color: white">GENEREAZA</button>
+</div>
+<hr />
+<p>Redă o imagine care se află in folderul <strong>www</strong></p>
+<pre class="r"><code>fluidRow(
+    tags$img(height = 300, width = 300, src = &quot;Sierpinski.png&quot;),
+    p(&quot;Triunghiul lui Sierpinski&quot;, style = &quot;text-align: center&quot;)
+)</code></pre>
+<hr />
+</div>
+<div id="simulare" class="section level2">
+<h2><strong>Simulare</strong></h2>
+<p><br></p>
+<p>Redă un bloc de cod declarat în <strong>server.r</strong> în funcție de numărul de pași.</p>
+<pre class="r"><code>conditionalPanel(
+    condition = &quot;input.steps == 1&quot;,
+    uiOutput(&quot;my.init&quot;)
+),
+
+conditionalPanel(
+    condition = &quot;input.steps &gt; 1&quot;,
+    uiOutput(&quot;my.extend&quot;)
+)</code></pre>
+<p>Blocurile de cod care se pot reda, sunt aproape identice, fiecare din ele este folosit pentru un <strong><em>plot</em></strong> diferit, de exemplu în primul <strong><em>sliderInput</em></strong> valoarea <strong><em>step</em></strong> este setată la 1, dar în celălalt variază, iar <strong><em>inputId</em></strong> diferă și el. În <strong><em>animationOption</em></strong> am adăugat butoane personalizate.</p>
+<pre class="r"><code>output$my.init &lt;- renderUI({
+    sliderInput(
+        inputId = &quot;init&quot;,
+        &quot;Numărul de puncte:&quot;,
+        min = 1,
+        max = 5000,
+        step = 1,
+        value = 1,
+        animate = animationOptions(
+            interval = input$speed,
+            playButton = div(
+                actionButton(
+                    inputId = &quot;shape&quot;,
+                    label = &quot;START&quot;,
+                    style = &quot;background-color: #6699ff; width: 80px; color: white&quot;
+                ),
+                    style = &quot;margin-top: 20px; margin-bottom: -10px; display: flex; justify-content: center;&quot;
+                ),
+            pauseButton = div(
+                actionButton(
+                    inputId = &quot;shape&quot;,
+                    label = &quot;STOP&quot;,
+                    style = &quot;background-color: #6699ff; width: 80px; color: white&quot;
+                ),
+                style = &quot;margin-top: 20px; margin-bottom: -10px; display: flex; justify-content: center;&quot;
+            )
+        )
+    )
+})
+    
+output$my.extend &lt;- renderUI({
+    sliderInput(
+        &quot;extend&quot;,
+        &quot;Numărul de puncte:&quot;,
+        min = 1,
+        max = 5000,
+        step = input$steps,
+        value = 1,
+        animate = animationOptions(
+            interval = input$speed,
+            playButton = div(
+                actionButton(
+                    inputId = &quot;shape&quot;,
+                    label = &quot;START&quot;,
+                    style = &quot;background-color: #6699ff; width: 80px; color: white&quot;
+                ),
+                style = &quot;margin-top: 20px; margin-bottom: -10px; display: flex; justify-content: center;&quot;
+            ),
+            pauseButton = div(
+                actionButton(
+                    inputId = &quot;shape&quot;,
+                    label = &quot;STOP&quot;,
+                    style = &quot;background-color: #6699ff; width: 80px; color: white&quot;
+                ),
+                style = &quot;margin-top: 20px; margin-bottom: -10px; display: flex; justify-content: center;&quot;
+            )
+        )
+    )
+})</code></pre>
+<p>În funcție de <strong><em>steps</em></strong> este ales și care plot trebuie afișat, diferența este că <strong><em>initPlot</em></strong> afișează elemente în plus de UI pentru a se observa mai bine generarea punctelor.</p>
+<pre class="r"><code>conditionalPanel(
+    condition = &quot;input.steps == 1&quot;,
+    plotOutput(&quot;initPlot&quot;, height = &quot;610px&quot;)
+),
+
+conditionalPanel(
+    condition = &quot;input.steps == 1&quot;,
+    plotOutput(&quot;initPlot&quot;, height = &quot;610px&quot;)
+)</code></pre>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
